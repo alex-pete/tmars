@@ -19,15 +19,25 @@ Standard setup starts at rating 20 and production 1. Corporate Era starts at rat
 | `androidApp` | Landscape Jetpack Compose board. |
 | `iosApp` | Landscape SwiftUI board. |
 
-## Run Android
+## Install the Android app
 
-Install JDK 17+ and Android SDK 35, then open the project in Android Studio or run:
+The debug APK installs on Android 7.0 or newer. Enable installing unknown apps for your browser or files app, then open the APK. The screen is landscape.
+
+Build it yourself with the steps below. The output is `androidApp/build/outputs/apk/debug/androidApp-debug.apk`.
+
+## Run Android from this repo
+
+1. Install [Android Studio](https://developer.android.com/studio). Use a current stable release so it can sync Android Gradle Plugin 8.9.
+2. On first launch, let it install the Android SDK. This project compiles against SDK 35.
+3. Clone the repo and choose **File → Open**. Select the repository root, the directory that contains `settings.gradle.kts`.
+4. Wait for Gradle sync. If it asks for the SDK path, point it at the SDK Android Studio installed.
+5. In the run configuration list, select `androidApp` and run it on a device or emulator. The board opens in landscape.
+
+From a terminal, with JDK 17+ and `ANDROID_HOME` set (or `sdk.dir` in `local.properties`):
 
 ```bash
 ./gradlew :androidApp:assembleDebug
 ```
-
-Gradle uses `ANDROID_HOME` or `local.properties` (`sdk.dir`).
 
 ## Run iOS
 
