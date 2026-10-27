@@ -1,32 +1,43 @@
-# Simple KMP app
+# Player board
 
-Kotlin Multiplatform starter with shared business logic and native UI on each platform.
+Kotlin Multiplatform tracker for a Terraforming Mars player board. Shared Kotlin holds the counts and the rules. Android draws the board with Jetpack Compose. iOS draws the same board with SwiftUI.
 
-- Android UI is Jetpack Compose in `androidApp`. Compose is not shared with iOS.
-- iOS UI is SwiftUI in `iosApp`.
-- Shared Kotlin code lives in `shared` and is consumed by both apps.
+The screen follows the physical player mat:
 
-The sample screen shows a platform greeting from shared code and a counter owned by a shared `HomeViewModel`. Android observes that state with Jetpack Compose. iOS observes it with SwiftUI.
+- Top row: MegaCredit, steel, and titanium stock. Steel is worth 2 each. Titanium is worth 3 each.
+- Next two rows: production tracks. MegaCredit production runs from −5 upward. The other tracks start at 0. The arrow steps production past 10.
+- The globe is the terraform rating. Income is rating plus MegaCredit production, and it does not go below zero.
+- Bottom row: plant, energy, and heat stock. Eight plants spend for a greenery and raise the rating. Eight heat spends to raise temperature and the rating. Leftover energy becomes heat when you produce.
+
+Standard setup starts at rating 20 and production 1. Corporate Era starts at rating 20 and production 0. Produce runs the generation: energy stock moves into heat, then each resource gains its production. MegaCredits gain the income figure.
 
 ## Modules
 
 | Module | Role |
 | --- | --- |
-| `shared` | View models, state, and dependency injection. Android and iOS targets. |
-| `androidApp` | Android application. Jetpack Compose, Material 3. |
-| `iosApp` | Xcode app. SwiftUI. Builds the `Shared` framework with Gradle. |
+| `shared` | `PlayerBoard`, production rules, and `BoardViewModel`. |
+| `androidApp` | Landscape Jetpack Compose board. |
+| `iosApp` | Landscape SwiftUI board. |
 
-`shared` exports a static framework named `Shared`. SwiftUI reads `HomeViewModel` through [KMP-ObservableViewModel](https://github.com/rickclephas/KMP-ObservableViewModel) and [KMP-NativeCoroutines](https://github.com/rickclephas/KMP-NativeCoroutines). Koin creates the shared objects.
+## Install the Android app
 
-## Run Android
+The debug APK installs on Android 7.0 or newer. Enable installing unknown apps for your browser or files app, then open the APK. The screen is landscape.
 
-Install JDK 17+ and Android SDK 35, then either open the project in Android Studio or run:
+Build it yourself with the steps below. The output is `androidApp/build/outputs/apk/debug/androidApp-debug.apk`.
+
+## Run Android from this repo
+
+1. Install [Android Studio](https://developer.android.com/studio). Use a current stable release so it can sync Android Gradle Plugin 8.9.
+2. On first launch, let it install the Android SDK. This project compiles against SDK 35.
+3. Clone the repo and choose **File → Open**. Select the repository root, the directory that contains `settings.gradle.kts`.
+4. Wait for Gradle sync. If it asks for the SDK path, point it at the SDK Android Studio installed.
+5. In the run configuration list, select `androidApp` and run it on a device or emulator. The board opens in landscape.
+
+From a terminal, with JDK 17+ and `ANDROID_HOME` set (or `sdk.dir` in `local.properties`):
 
 ```bash
 ./gradlew :androidApp:assembleDebug
 ```
-
-Gradle uses `ANDROID_HOME` or `local.properties` (`sdk.dir`).
 
 ## Run iOS
 
@@ -34,13 +45,4 @@ On a Mac with Xcode 15+:
 
 1. Open `iosApp/iosApp.xcodeproj`.
 2. Set your Team in `iosApp/Configuration/Config.xcconfig` (`TEAM_ID`).
-3. Run the `iosApp` scheme. The Xcode build compiles the Kotlin framework first.
-
-## Add a feature
-
-1. Put state and behavior in `shared` (`HomeViewModel` is the pattern).
-2. Register new types in `shared/src/commonMain/kotlin/com/jetbrains/kmpapp/di/Koin.kt`.
-3. Draw the Android screen in `androidApp` with Jetpack Compose.
-4. Draw the iOS screen in `iosApp` with SwiftUI, using `@StateViewModel` for shared view models.
-
-Platform-specific APIs go in `androidMain` or `iosMain` behind an `expect`/`actual` declaration, the same way `platformName()` does.
+3. Run the `iosApp` scheme. The Xcode build compiles the `Shared` framework first.

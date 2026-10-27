@@ -1,6 +1,7 @@
 package com.jetbrains.kmpapp
 
 import android.app.Application
+import com.jetbrains.kmpapp.board.BoardViewModel
 import com.jetbrains.kmpapp.di.initKoin
 import org.koin.dsl.module
 
@@ -10,9 +11,9 @@ class KmpApplication : Application() {
         initKoin(
             listOf(
                 module {
-                    factory { HomeViewModel(get<Greeting>().message) }
-                }
-            )
+                    factory { BoardViewModel() }
+                },
+            ),
         )
     }
 }
