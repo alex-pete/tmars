@@ -1,4 +1,4 @@
-rootProject.name = "KMP-App-Template-Native"
+rootProject.name = "SimpleKmpApp"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
@@ -29,4 +29,4 @@ dependencyResolutionManagement {
 }
 
 include(":shared")
-include(":composeApp")
+include(":androidApp")

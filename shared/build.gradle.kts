@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-    alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kmpNativeCoroutines)
 }
@@ -28,25 +28,26 @@ kotlin {
         }
     }
 
+    targets.withType<KotlinNativeTarget>().configureEach {
+        compilations.configureEach {
+            compileTaskProvider.configure {
+                compilerOptions {
+                    optIn.add("kotlinx.cinterop.ExperimentalForeignApi")
+                    optIn.add("kotlin.experimental.ExperimentalObjCName")
+                }
+            }
+        }
+    }
+
     sourceSets {
-        androidMain.dependencies {
-            implementation(libs.ktor.client.okhttp)
-        }
-        iosMain.dependencies {
-            implementation(libs.ktor.client.darwin)
-        }
         commonMain.dependencies {
-            implementation(libs.ktor.client.core)
-            implementation(libs.ktor.client.content.negotiation)
-            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.coroutines.core)
             implementation(libs.koin.core)
             api(libs.kmp.observable.viewmodel)
         }
-
-        // Required by KMM-ViewModel
-        all {
-            languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
-            languageSettings.optIn("kotlin.experimental.ExperimentalObjCName")
+        commonTest.dependencies {
+            implementation(kotlin("test"))
+            implementation(libs.kotlinx.coroutines.test)
         }
     }
 }
