@@ -1,4 +1,14 @@
 <resources>
-    <string name="app_name">Simple KMP</string>
-    <string name="increment">Increment</string>
+    <string name="app_name">Player Board</string>
+    <string name="reset_title">Reset the board?</string>
+    <string name="reset_body">Stock, production, and terraform rating return to the %1$s setup.</string>
+    <string name="reset">Reset</string>
+    <string name="cancel">Cancel</string>
+    <string name="produce">Produce</string>
+    <string name="standard">Standard</string>
+    <string name="corporate_era">Corporate Era</string>
+    <string name="convert_plants">8 → greenery</string>
+    <string name="convert_heat">8 → temperature</string>
+    <string name="energy_becomes_heat">becomes heat</string>
+    <string name="stock_description">%1$s stock %2$d</string>
 </resources>
